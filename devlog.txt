@@ -4,4 +4,4 @@ chenB -- 2020-4-26 15:26
 Created design doc. Started working on componenet and site map.
 
 chenB -- 2020-4-27 17:47
-Wrote short description/functionalities and finished component and site map.
+Wrote short description/functionalities and finished component and site map. Will be subjected to change later.
