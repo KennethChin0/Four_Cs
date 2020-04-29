@@ -1,16 +1,25 @@
 Four Cs: Kenneth Chin, Brandon Chen, Ethan Chen, Justin Chen
 
 chenB -- 2020-4-26 15:26
-Created design doc. Started working on componenet and site map.
+    - Created design doc. Started working on componenet and site map.
 
 chenB -- 2020-4-27 17:47
-Wrote short description/functionalities and finished component and site map. Will be subjected to change later.
+    - Wrote short description/functionalities and finished component and site map. Will be subjected to change later.
 
-chenB -- 2020-4-28 20:30
-Remade sitemap to be more clear on what graphs we want and where.
+Team -- 2020-4-28 20:30
+    - Reviewed by MarshmallowFlush and TwoFortyNine
+    - Compliments: our maps are clear and concise, good description, different use of graphs, and solid data
+    - Criticisms: roles are too vague, typos, unclear on functions, too vague about our graphs,
+    there's no section for descibing each html page
 
-chenJ -- 2020-4-28 20:30
-Add functions in devlog
+    - Make our description clearer on what we want to do
+    - Add a section to show what we are doing with our data
+    - Add a section to explain the pages in our site
+    - Update component map to show which data goes where
+    - Add a section to explain our functions
+    - Remade sitemap to be more clear on what graphs we want and where.
+    - (WORKING ON) Fix up roles and responsibilities
+    - (WORKING ON) Added a timeline
 
 chenB -- 2020-4-29 10:54
-Created basic routes and html templates. Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
+    - Created basic routes and html templates. Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
