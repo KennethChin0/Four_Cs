@@ -9,5 +9,8 @@ Wrote short description/functionalities and finished component and site map. Wil
 chenB -- 2020-4-28 20:30
 Remade sitemap to be more clear on what graphs we want and where.
 
+chenJ -- 2020-4-28 20:30
+Add functions in devlog
+
 chenB -- 2020-4-29 10:54
 Created basic routes and html templates. Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
