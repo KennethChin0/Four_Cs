@@ -23,8 +23,10 @@ chenB -- 2020-4-29 10:54
     - Created basic routes and html templates. Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
     
 chenB -- 2020-4-29 22:30
-    - Checked and received country input from html in JavaScript for valid country name. Read one of the csv file and filtered data to only get the portions containing the specified country. 
-
+    - Checked and received country input from html in JavaScript for valid country name. 
+    - Read one of the csv file and filtered data to only get the portions containing the specified country. 
+    - Created graph for specified country. No value line yet and date axis label isn't appearing.
+    
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
