@@ -28,7 +28,7 @@ var createTimeGraph = function(e){
     for (var i = 0; i < data.length; i++){
       if (data[i].Country.localeCompare(e) == 0){
         filteredData.push(data[i])
-        allDates.push({Date: d3.timeParse("%Y-%m-%d")(data[i].Date)})
+        allDates.push(d3.timeParse("%Y-%m-%d")(data[i].Date))
         allCountries.push( {Country: data[i].Country})
         allConfirmed.push({Confirmed: data[i].Confirmed})
         allRecovered.push({Recovered: data[i].Recovered})
