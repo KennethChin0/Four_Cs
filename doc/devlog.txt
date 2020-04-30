@@ -12,14 +12,17 @@ Team -- 2020-4-28 20:30
     - Criticisms: roles are too vague, typos, unclear on functions, too vague about our graphs,
     there's no section for descibing each html page
 
-    - Make our description clearer on what we want to do
-    - Add a section to show what we are doing with our data
-    - Add a section to explain the pages in our site
-    - Update component map to show which data goes where
-    - Add a section to explain our functions
+    - Made our description clearer on what we want to do
+    - Added a section to show what we are doing with our data
+    - Added a section to explain the pages in our site
+    - Updated component map to show which data goes where
+    - Added a section to explain our functions
     - Remade sitemap to be more clear on what graphs we want and where.
-    - (WORKING ON) Fix up roles and responsibilities
-    - (WORKING ON) Added a timeline
 
 chenB -- 2020-4-29 10:54
     - Created basic routes and html templates. Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
+
+Team -- 2020-4-29 20:05
+    - Finish design doc
+    - Fixed up roles and responsibilities
+    - Added a timeline
