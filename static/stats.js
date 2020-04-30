@@ -36,7 +36,12 @@ var createTimeGraph = function(e){
       }
     }
 
+    console.log(filteredData)
     console.log(allDates)
+    for (i = 0; i < filteredData.length; i++){
+      filteredData[i].Date = allDates[i]
+    }
+    console.log(filteredData)
     var svg = d3.select("#timeGraph")
       .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -57,7 +62,16 @@ var createTimeGraph = function(e){
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y));
-    console.log(e)
+
+    svg.append("path")
+   .datum(filteredData)
+   .attr("fill", "none")
+   .attr("stroke", "steelblue")
+   .attr("stroke-width", 1.5)
+   .attr("d", d3.line()
+     .x(function(d) { return x(d.Date) })
+     .y(function(d) { return y(d.Confirmed) })
+   )
   })
   //console.log(filteredData)
 }
