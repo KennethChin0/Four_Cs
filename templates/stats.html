@@ -5,11 +5,14 @@
     </head>
     <body>
       <datalist id="allCountries">
+        <option id ="United States">United States</option>
         {% for x in allCountries %}
         <option id = {{x}}>{{x}}</option>
         {% endfor %}
       </datalist>
       <input name="country" id="country" list="allCountries" autocomplete="off" style="width:100%; font-size:16px;" value={{allCountries[0]}}>
+      <div id = "timeGraph">
+      </div>
     </body>
     <script src="static/stats.js"></script>
 </html>
