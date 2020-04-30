@@ -19,13 +19,24 @@ var check = function(e){//checks if input is a valid country
 var createTimeGraph = function(e){
   var filteredData = []//new data array with only the specified country data
   //needs a separate checker for United States because US is part of different csv
+  var allDates = []
+  var allCountries = []
+  var allConfirmed = []
+  var allRecovered = []
+  var allDeaths = []
   d3.csv("static/data/countries-aggregated.csv").then(function(data){
     for (var i = 0; i < data.length; i++){
       if (data[i].Country.localeCompare(e) == 0){
         filteredData.push(data[i])
+        allDates.push({Date: d3.timeParse("%Y-%m-%d")(data[i].Date)})
+        allCountries.push( {Country: data[i].Country})
+        allConfirmed.push({Confirmed: data[i].Confirmed})
+        allRecovered.push({Recovered: data[i].Recovered})
+        allDeaths.push({Deaths: data[i].Deaths})
       }
     }
 
+    console.log(allDates)
     var svg = d3.select("#timeGraph")
       .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -35,14 +46,14 @@ var createTimeGraph = function(e){
               "translate(" + margin.left + "," + margin.top + ")");
 
     var x = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.Date; }))
+      .domain(d3.extent(allDates))
       .range([ 0, width ]);
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
     var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.Confirmed; })])
+      .domain([0, d3.max(filteredData, function(d) { return +d.Confirmed; })])
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y));
