@@ -27,6 +27,9 @@ chenB -- 2020-4-29 22:30
     - Read one of the csv file and filtered data to only get the portions containing the specified country. 
     - Created graph for specified country. No value line yet and date axis label isn't appearing.
     
+chenB -- 2020-4-30 13:42
+    - Added value line to virus growth over time graph.
+    
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
