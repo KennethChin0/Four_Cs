@@ -118,7 +118,7 @@ var createPopulationPie = function(e){
 
         var color = d3.scaleOrdinal()
           .domain(pieData)
-          .range(d3.schemeSet2);
+          .range(["#73c378","#f9694c"]);
 
         var pie = d3.pie()
           .value(function(d) {return d.value; })
