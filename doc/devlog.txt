@@ -20,7 +20,8 @@ Team -- 2020-4-28 20:30
     - Remade sitemap to be more clear on what graphs we want and where.
 
 chenB -- 2020-4-29 10:54
-    - Created basic routes and html templates. Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
+    - Created basic routes and html templates. 
+    - Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
     
 chenB -- 2020-4-29 22:30
     - Checked and received country input from html in JavaScript for valid country name. 
@@ -33,6 +34,9 @@ chenB -- 2020-4-30 13:42
 chenB -- 2020-4-30 20:04
     - Read two csv files to get population and confirmed cases of a specified country
     - Created pie chart with healthy and confirmed cases portions with labels.
+
+chenB -- 2020-5-1 16:42
+    - Remade line graph and pie chart functions for the US as the data for the US is in a different CSV file than the other countries
 
 Team -- 2020-4-29 20:05
     - Finish design doc
