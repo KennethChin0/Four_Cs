@@ -18,6 +18,7 @@ var check = function(e){//checks if input is a valid country
       else{
         createTimeGraph(e.value)//e.value is the chosen country
         createPopulationPie(e.value)//population vs confirmed pie chart
+        createBarGraph(e.value)
       }
     }
   }
@@ -277,5 +278,60 @@ var createPopulationPieUS = function(e){
         .style("font-size", 17)
 
     })
+  })
+}
+
+var createBarGraph = function(e){
+  var x = d3.scaleBand()
+    .range([0, width])
+    .padding(0.1);
+  var y = d3.scaleLinear()
+    .range([height, 0]);
+
+  var svg = d3.select("#barGraph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv("static/data/countries-aggregated.csv").then(function(data){
+    var filteredData = []//getting all rows with the specified country
+    for (var i = 0; i < data.length; i++){
+      if (data[i].Country.localeCompare(e) == 0){
+        filteredData.push(data[i])
+      }
+    }
+
+    filteredData = [filteredData[filteredData.length - 1]]
+    filteredData = [{Category : "Confirmed", number : filteredData[0].Confirmed},
+                    {Category : "Recovered", number : filteredData[0].Recovered},
+                    {Category : "Deaths", number : filteredData[0].Deaths}]
+
+    var allCategory = []
+    var allNumbers = []
+    for (var i = 0; i < filteredData.length; i++){
+      allCategory.push({Category : filteredData[i].Category})
+      allNumbers.push({number : filteredData[i].number})
+    }
+
+    x.domain(filteredData.map(function(d) { return d.Category; }));
+    y.domain([0, d3.max(filteredData, function(d) { return d.number; })]);
+
+    // svg.selectAll(".bar")
+    //   .data(data)
+    // .enter().append("rect")
+    //   .attr("class", "bar")
+    //   .attr("x", function(d) { return x(allCategory); })
+    //   .attr("width", x.bandwidth())
+    //   .attr("y", function(d) { return y(allNumbers); })
+    //   .attr("height", function(d) { return height - y(allNumbers); });
+
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
   })
 }
