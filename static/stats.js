@@ -12,6 +12,7 @@ var check = function(e){//checks if input is a valid country
   for (var i = 0; i < list.childElementCount; i++){
     if (list.children[i].value.localeCompare(e.value) == 0){
       createTimeGraph(e.value)//e.value is the chosen country
+      createPopulationPie(e.value)//population vs confirmed pie chart
     }
   }
 }
@@ -36,12 +37,12 @@ var createTimeGraph = function(e){
       }
     }
 
-    console.log(filteredData)
-    console.log(allDates)
+    //console.log(filteredData)
+    //console.log(allDates)
     for (i = 0; i < filteredData.length; i++){
       filteredData[i].Date = allDates[i]
     }
-    console.log(filteredData)
+    //console.log(filteredData)
     var svg = d3.select("#timeGraph")
       .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -74,4 +75,80 @@ var createTimeGraph = function(e){
    )
   })
   //console.log(filteredData)
+}
+
+var createPopulationPie = function(e){
+  var width = 450
+  var height = 450
+  var margin = 40
+
+  var radius = Math.min(width, height) / 2 - margin
+
+  var svg = d3.select("#populationPie")
+    .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+    .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  var population = 0
+  var latestNumOfConfirmed = 0
+  var allConfirmedDays = []
+
+  d3.csv("static/data/reference.csv").then(function(data){
+    var found = false;//reference.csv includes state/province population so we
+    //only need the first match which is total population
+    for (var i = 0; i < data.length; i++){
+      if (e.localeCompare(data[i].Country_Region) == 0 && !found){
+        population = data[i].Population
+        //console.log(population)
+        found = true
+      }
+    }
+
+
+    d3.csv("static/data/countries-aggregated.csv").then(function(data){
+        for (var i = 0; i < data.length; i++){
+          if (data[i].Country.localeCompare(e) == 0){
+            allConfirmedDays.push(data[i].Confirmed)
+          }
+        }
+        latestNumOfConfirmed = allConfirmedDays[allConfirmedDays.length - 1]
+        var pieData = {Healthy : population - latestNumOfConfirmed, Confirmed : parseInt(latestNumOfConfirmed)}
+
+        var color = d3.scaleOrdinal()
+          .domain(pieData)
+          .range(d3.schemeSet2);
+
+        var pie = d3.pie()
+          .value(function(d) {return d.value; })
+        var data_ready = pie(d3.entries(pieData))
+        var arcGenerator = d3.arc()
+          .innerRadius(0)
+          .outerRadius(radius)
+        svg
+          .selectAll('mySlices')
+          .data(data_ready)
+          .enter()
+          .append('path')
+            .attr('d', arcGenerator)
+            .attr('fill', function(d){ return(color(d.data.key)) })
+            .attr("stroke", "black")
+            .style("stroke-width", "2px")
+            .style("opacity", 0.7)
+            svg
+      .selectAll('mySlices')
+        .data(data_ready)
+        .enter()
+        .append('text')
+        .text(function(d){ return d.data.key})
+        .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
+        .style("text-anchor", "middle")
+        .style("font-size", 17)
+
+    })
+  })
+
+
+
 }
