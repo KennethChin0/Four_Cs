@@ -13,7 +13,7 @@ var check = function(e){//checks if input is a valid country
     if (list.children[i].value.localeCompare(e.value) == 0){
       if (e.value.localeCompare("United States") == 0){
         createTimeGraphUS(e.value)
-        createPopulationPieUS(e.value)
+        createPopulationPieUS("US")
       }
       else{
         createTimeGraph(e.value)//e.value is the chosen country
@@ -208,4 +208,74 @@ var createTimeGraphUS = function(e){
    )
   })
   //console.log(filteredData)
+}
+
+var createPopulationPieUS = function(e){
+  var width = 450
+  var height = 450
+  var margin = 40
+
+  var radius = Math.min(width, height) / 2 - margin
+
+  var svg = d3.select("#populationPie")
+    .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+    .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  var population = 0
+  var latestNumOfConfirmed = 0
+  var allConfirmedDays = []
+
+  d3.csv("static/data/reference.csv").then(function(data){
+    var found = false;//reference.csv includes state/province population so we
+    //only need the first match which is total population
+    for (var i = 0; i < data.length; i++){
+      if (e.localeCompare(data[i].Country_Region) == 0 && !found){
+        population = data[i].Population
+        //console.log(population)
+        found = true
+      }
+    }
+
+
+    d3.csv("static/data/key-countries-pivoted.csv").then(function(data){
+        for (var i = 0; i < data.length; i++){
+          allConfirmedDays.push(data[i].US)
+        }
+        latestNumOfConfirmed = allConfirmedDays[allConfirmedDays.length - 1]
+        var pieData = {Healthy : population - latestNumOfConfirmed, Confirmed : parseInt(latestNumOfConfirmed)}
+
+        var color = d3.scaleOrdinal()
+          .domain(pieData)
+          .range(["#73c378","#f9694c"]);
+
+        var pie = d3.pie()
+          .value(function(d) {return d.value; })
+        var data_ready = pie(d3.entries(pieData))
+        var arcGenerator = d3.arc()
+          .innerRadius(0)
+          .outerRadius(radius)
+        svg
+          .selectAll('mySlices')
+          .data(data_ready)
+          .enter()
+          .append('path')
+            .attr('d', arcGenerator)
+            .attr('fill', function(d){ return(color(d.data.key)) })
+            .style("stroke-width", "2px")
+            .style("opacity", 0.7)
+            svg
+      .selectAll('mySlices')
+        .data(data_ready)
+        .enter()
+        .append('text')
+        .text(function(d){ return d.data.key})
+        .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
+        .style("text-anchor", "middle")
+        .style("font-size", 17)
+
+    })
+  })
 }
