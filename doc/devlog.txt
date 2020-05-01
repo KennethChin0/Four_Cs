@@ -30,6 +30,10 @@ chenB -- 2020-4-29 22:30
 chenB -- 2020-4-30 13:42
     - Added value line to virus growth over time graph.
     
+chenB -- 2020-4-30 20:04
+    - Read two csv files to get population and confirmed cases of a specified country
+    - Created pie chart with healthy and confirmed cases portions.
+
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
