@@ -41,6 +41,9 @@ chenB -- 2020-5-1 16:42
 chenB -- 2020-5-1 21:35
     - Made a complete bar graph with labels three bars showing number of confirmed cases, recovered, and deaths of the specified        
     country.
+    
+chenB -- 2020-5-2 15:56
+    - Added a recovered and deaths line to the virus growth in a country line graph with specific colors and labels.
 
 Team -- 2020-4-29 20:05
     - Finish design doc
