@@ -220,7 +220,7 @@ var createTimeGraphUS = function(e){
     //console.log(filteredData)
     var svg = d3.select("#timeGraph")
       .append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + margin.left + margin.right + 50)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform",
@@ -248,8 +248,15 @@ var createTimeGraphUS = function(e){
      .x(function(d) { return x(d.Date) })
      .y(function(d) { return y(d.US) })
    )
+
+   svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + y(Number(parseInt(filteredData[filteredData.length -1].US))) + ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", "blue")
+    .text("Confirmed");
   })
-  //console.log(filteredData)
+  console.log(filteredData)
 }
 
 var createPopulationPieUS = function(e){
