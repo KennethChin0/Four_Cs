@@ -331,6 +331,7 @@ var createBarGraph = function(e){
       .data(filteredData)
       .enter().append("rect")
       .attr("class", "bar")
+      .attr("fill", "#88cd87")
       .attr("x", function(d) { return x(d.Category); })
       .attr("width", x.bandwidth())
       .attr("y", function(d) { return y(Number(d.number)); })
