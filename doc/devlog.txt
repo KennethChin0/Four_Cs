@@ -38,6 +38,10 @@ chenB -- 2020-4-30 20:04
 chenB -- 2020-5-1 16:42
     - Remade line graph and pie chart functions for the US as the data for the US is in a different CSV file than the other countries
 
+chenB -- 2020-5-1 21:35
+    - Made a complete bar graph with labels three bars showing number of confirmed cases, recovered, and deaths of the specified        
+    country.
+
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
