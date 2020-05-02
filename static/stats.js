@@ -318,20 +318,22 @@ var createBarGraph = function(e){
     x.domain(filteredData.map(function(d) { return d.Category; }));
     y.domain([0, d3.max(filteredData, function(d) { return d.number; })]);
 
-    // svg.selectAll(".bar")
-    //   .data(data)
-    // .enter().append("rect")
-    //   .attr("class", "bar")
-    //   .attr("x", function(d) { return x(allCategory); })
-    //   .attr("width", x.bandwidth())
-    //   .attr("y", function(d) { return y(allNumbers); })
-    //   .attr("height", function(d) { return height - y(allNumbers); });
+    console.log(x(filteredData.Category))
 
     svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
 
     svg.append("g")
         .call(d3.axisLeft(y));
+
+    svg.selectAll(".bar")
+      .data(filteredData)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.Category); })
+      .attr("width", x.bandwidth())
+      .attr("y", function(d) { return y(Number(d.number)); })
+      .attr("height", function(d) { return height - y(Number(d.number)); });
   })
 }
