@@ -52,8 +52,8 @@ var createTimeGraph = function(e){
     //console.log(filteredData)
     var svg = d3.select("#timeGraph")
       .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width + margin.left + margin.right + 50)
+        .attr("height", height + margin.top + margin.bottom )
       .append("g")
         .attr("transform",
               "translate(" + margin.left + "," + margin.top + ")");
@@ -74,12 +74,53 @@ var createTimeGraph = function(e){
     svg.append("path")
    .datum(filteredData)
    .attr("fill", "none")
-   .attr("stroke", "steelblue")
+   .attr("stroke", "blue")
    .attr("stroke-width", 1.5)
    .attr("d", d3.line()
      .x(function(d) { return x(d.Date) })
      .y(function(d) { return y(d.Confirmed) })
    )
+
+   svg.append("path")
+  .datum(filteredData)
+  .attr("fill", "none")
+  .attr("stroke", "green")
+  .attr("stroke-width", 1.5)
+  .attr("d", d3.line()
+    .x(function(d) { return x(d.Date) })
+    .y(function(d) { return y(d.Recovered) })
+  )
+
+  svg.append("path")
+ .datum(filteredData)
+ .attr("fill", "none")
+ .attr("stroke", "red")
+ .attr("stroke-width", 1.5)
+ .attr("d", d3.line()
+   .x(function(d) { return x(d.Date) })
+   .y(function(d) { return y(d.Deaths) })
+  )
+
+  svg.append("text")
+		.attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData[filteredData.length -1].Confirmed)) + ")")
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "blue")
+		.text("Confirmed");
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData[filteredData.length -1].Recovered)) + ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", "green")
+    .text("Recovered");
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData[filteredData.length -1].Deaths)) + ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", "red")
+    .text("Deaths");
   })
   //console.log(filteredData)
 }
