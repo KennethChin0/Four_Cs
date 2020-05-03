@@ -13,15 +13,21 @@ var list = document.getElementById("allCountries")
 var country1;
 var country2;
 
+var clear = function(e) {
+  d3.select('#timeGraph').selectAll('svg').remove();
+}
+
 var check1 = function(e){
   for (var i = 0; i < list.childElementCount; i++){
     if (list.children[i].value.localeCompare(e.value) == 0){
       if (e.value.localeCompare("United States") == 0){
         country1 = "United States"
+        clear()
         draw()
       }
       else{
         country1 = e.value
+        clear()
         draw()
       }
     }
@@ -34,10 +40,12 @@ var check2 = function(e){
     if (list.children[i].value.localeCompare(e.value) == 0){
       if (e.value.localeCompare("United States") == 0){
         country2 = "United States"
+        clear()
         draw()
       }
       else{
         country2 = e.value
+        clear()
         draw()
       }
     }

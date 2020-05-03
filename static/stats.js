@@ -12,16 +12,24 @@ var check = function(e){//checks if input is a valid country
   for (var i = 0; i < list.childElementCount; i++){
     if (list.children[i].value.localeCompare(e.value) == 0){
       if (e.value.localeCompare("United States") == 0){
+        clear()
         createTimeGraphUS(e.value)
         createPopulationPieUS("US")
       }
       else{
+        clear()
         createTimeGraph(e.value)//e.value is the chosen country
         createPopulationPie(e.value)//population vs confirmed pie chart
         createBarGraph(e.value)
       }
     }
   }
+}
+
+var clear = function(e) {
+  d3.select('#timeGraph').selectAll('svg').remove();
+  d3.select('#populationPie').selectAll('svg').remove();
+  d3.select('#barGraph').selectAll('svg').remove();
 }
 
 var createTimeGraph = function(e){
@@ -364,9 +372,9 @@ var createBarGraph = function(e){
     }
 
     x.domain(filteredData.map(function(d) { return d.Category; }));
-    y.domain([0, d3.max(filteredData, function(d) { return d.number; })]);
+    y.domain([0, d3.max(filteredData, function(d) { return +d.number; })]);
 
-    console.log(x(filteredData.Category))
+    console.log(filteredData[0].number)
 
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
