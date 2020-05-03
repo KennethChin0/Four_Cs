@@ -45,6 +45,13 @@ chenB -- 2020-5-1 21:35
 chenB -- 2020-5-2 15:56
     - Added a recovered and deaths line to the virus growth in a country line graph with specific colors and labels.
 
+chenB -- 2020-5-3 19:04
+    - Added two searchable dropdown menu for countries.
+    - Processed the countries to see if either of them are the US to get its data from another CSV
+    - Created a line graph with two lines depicting growth of virus of the two countries. Works with the US. Needs better colors and
+    labels.
+    - Created clear function for both js files so old graphs are cleared for new ones.
+
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
