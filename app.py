@@ -22,7 +22,16 @@ def stats():
 
 @app.route("/compare")
 def compare():
-    return(render_template("compare.html"))
+    allCountries = []
+    count = 186
+    with open("static/data/countries-aggregated.csv", newline="") as csvfile:
+        content = csv.reader(csvfile,delimiter=",")
+        for row in content:
+            if (count != 0):
+                allCountries.append(row[1])
+                count-=1;
+    allCountries.pop(0)
+    return(render_template("compare.html", allCountries = allCountries))
 
 if __name__ == "__main__":
     app.debug=True

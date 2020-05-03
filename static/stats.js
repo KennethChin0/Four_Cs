@@ -256,7 +256,7 @@ var createTimeGraphUS = function(e){
     .style("fill", "blue")
     .text("Confirmed");
   })
-  console.log(filteredData)
+  //console.log(filteredData)
 }
 
 var createPopulationPieUS = function(e){
