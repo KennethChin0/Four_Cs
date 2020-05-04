@@ -52,6 +52,8 @@ chenB -- 2020-5-3 19:04
     labels.
     - Created clear function for both js files so old graphs are cleared for new ones.
 
+chinK -- 2020-5-4 10:28
+    - Added navigation bar and fix homepage
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
