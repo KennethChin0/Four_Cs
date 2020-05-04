@@ -75,16 +75,18 @@ var lineGraph = function(e){
   var filteredData2 = []
   var allDates1 = []
   var allDates2 = []
+  var c1 = country1;
+  var c2 = country2;
 
   d3.csv("static/data/countries-aggregated.csv").then(function(data){
     for (var i = 0; i < data.length; i++){
-      if (data[i].Country.localeCompare(country1) == 0){
+      if (data[i].Country.localeCompare(c1) == 0){
         filteredData1.push(data[i])
         allDates1.push(d3.timeParse("%Y-%m-%d")(data[i].Date))
       }
     }
     for (var i = 0; i < data.length; i++){
-      if (data[i].Country.localeCompare(country2) == 0){
+      if (data[i].Country.localeCompare(c2) == 0){
         filteredData2.push(data[i])
         allDates2.push(d3.timeParse("%Y-%m-%d")(data[i].Date))
       }
@@ -97,8 +99,9 @@ var lineGraph = function(e){
     for (i = 0; i < filteredData2.length; i++){
       filteredData2[i].Date = allDates2[i]
     }
-
-    if (filteredData1[filteredData1.length-1].Confirmed < filteredData2[filteredData2.length-1].Confirmed){
+    console.log(filteredData1)
+    console.log(filteredData2)
+    if (parseInt(filteredData1[filteredData1.length-1].Confirmed) < parseInt(filteredData2[filteredData2.length-1].Confirmed)){
       //filteredData1 will always be the one with the highest number of cases so the graph won't cut off some data
       var temp = filteredData1
       filteredData1 = filteredData2
@@ -106,9 +109,8 @@ var lineGraph = function(e){
       var temp2 = allDates1
       allDates1 = allDates2
       allDates2 = temp2
+      console.log("YES")
     }
-    console.log(filteredData1)
-    console.log(filteredData2)
     var svg = d3.select("#timeGraph")
       .append("svg")
         .attr("width", width + margin.left + margin.right + 50)
@@ -241,4 +243,44 @@ var lineGraphUS = function(e){
      })
    }
   })
+}
+
+var barGraph = function(e){
+  var x0 = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+  var x1 = d3.scale.ordinal();
+
+  var y = d3.scale.linear()
+      .range([height, 0]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x0)
+      .tickSize(0)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
+
+  var color = d3.scale.ordinal()
+      .range(["#ca0020","#f4a582","#d5d5d5","#92c5de","#0571b0"]);
+
+  var svg = d3.select('#barGraph').append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv("static/data/countries-aggregated.csv").then(function(data){
+    var allCategories = []
+    var allSubCategories = []
+    var filteredData = []
+    for (var i = 0; i < data.length; i++){
+      if (data[i].Country.localeCompare(e) == 0){
+        filteredData.push(data[i])
+      }
+    }
+  })
+
 }
