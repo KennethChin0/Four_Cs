@@ -15,6 +15,7 @@ var country2;
 
 var clear = function(e) {
   d3.select('#timeGraph').selectAll('svg').remove();
+  d3.select('#barGraph').selectAll('svg').remove();
 }
 
 var check1 = function(e){
