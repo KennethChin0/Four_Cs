@@ -55,7 +55,7 @@ var check2 = function(e){
 var draw = function(e){
   if (country1 != undefined && country2 != undefined){
     if (country1.localeCompare("United States") == 0){
-      lineGraphUS()
+        lineGraphUS()
       }
     else{
       if (country2.localeCompare("United States") == 0){
@@ -63,6 +63,7 @@ var draw = function(e){
       }
       else{
         lineGraph()
+        barGraph()
       }
     }
   }
@@ -99,8 +100,7 @@ var lineGraph = function(e){
     for (i = 0; i < filteredData2.length; i++){
       filteredData2[i].Date = allDates2[i]
     }
-    console.log(filteredData1)
-    console.log(filteredData2)
+
     if (parseInt(filteredData1[filteredData1.length-1].Confirmed) < parseInt(filteredData2[filteredData2.length-1].Confirmed)){
       //filteredData1 will always be the one with the highest number of cases so the graph won't cut off some data
       var temp = filteredData1
@@ -109,7 +109,6 @@ var lineGraph = function(e){
       var temp2 = allDates1
       allDates1 = allDates2
       allDates2 = temp2
-      console.log("YES")
     }
     var svg = d3.select("#timeGraph")
       .append("svg")
@@ -246,41 +245,83 @@ var lineGraphUS = function(e){
 }
 
 var barGraph = function(e){
-  var x0 = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
-
-  var x1 = d3.scale.ordinal();
-
-  var y = d3.scale.linear()
-      .range([height, 0]);
-
-  var xAxis = d3.svg.axis()
-      .scale(x0)
-      .tickSize(0)
-      .orient("bottom");
-
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
-
-  var color = d3.scale.ordinal()
-      .range(["#ca0020","#f4a582","#d5d5d5","#92c5de","#0571b0"]);
-
-  var svg = d3.select('#barGraph').append("svg")
+  var svg = d3.select("#barGraph")
+    .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
 
   d3.csv("static/data/countries-aggregated.csv").then(function(data){
-    var allCategories = []
-    var allSubCategories = []
-    var filteredData = []
+    var allCategories = []//country names will be the group of bars name
+    var allSubCategories = []//confirmed, recovered, deaths
+    var filteredData1 = []
+    var filteredData2 = []
     for (var i = 0; i < data.length; i++){
-      if (data[i].Country.localeCompare(e) == 0){
-        filteredData.push(data[i])
+      if (data[i].Country.localeCompare(country1) == 0){
+        filteredData1.push(data[i])
       }
     }
+    for (var i = 0; i < data.length; i++){
+      if (data[i].Country.localeCompare(country2) == 0){
+        filteredData2.push(data[i])
+      }
+    }
+    if (parseInt(filteredData1[filteredData1.length-1].Confirmed) < parseInt(filteredData2[filteredData2.length-1].Confirmed)){
+      //filteredData1 will always be the one with the highest number of cases so the graph won't cut off some data
+      var temp = filteredData1
+      filteredData1 = filteredData2
+      filteredData2 = temp
+    }
+
+    var refilteredData = []
+    refilteredData.push(filteredData1[filteredData1.length-1])
+    refilteredData.push(filteredData2[filteredData2.length-1])
+    console.log(refilteredData)
+    console.log(data)
+
+    var subgroups = data.columns.slice(2)
+    var groups = d3.map(refilteredData, function(d){return(d.Country)}).keys()
+    console.log(subgroups)
+    console.log(groups)
+    var x = d3.scaleBand()
+      .domain(groups)
+      .range([0, width])
+      .padding([0.2])
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).tickSize(0));
+
+    var y = d3.scaleLinear()
+      .domain([0, d3.max(refilteredData, function(d) { return +d.Confirmed; })])
+      .range([ height, 0 ]);
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    var xSubgroup = d3.scaleBand()
+      .domain(subgroups)
+      .range([0, x.bandwidth()])
+      .padding([0.05])
+
+    var color = d3.scaleOrdinal()
+      .domain(subgroups)
+      .range(['#e41a1c','#377eb8','#4daf4a'])
+
+    svg.append("g")
+      .selectAll("g")
+      .data(refilteredData)
+      .enter()
+      .append("g")
+        .attr("transform", function(d) { return "translate(" + x(d.Country) + ",0)"; })
+      .selectAll("rect")
+      .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
+      .enter().append("rect")
+        .attr("x", function(d) { return xSubgroup(d.key); })
+        .attr("y", function(d) { return y(d.value); })
+        .attr("width", xSubgroup.bandwidth())
+        .attr("height", function(d) { return height - y(d.value); })
+        .attr("fill", function(d) { return color(d.key); });
   })
 
 }
