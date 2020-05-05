@@ -51,6 +51,10 @@ chenB -- 2020-5-3 19:04
     - Created a line graph with two lines depicting growth of virus of the two countries. Works with the US. Needs better colors and
     labels.
     - Created clear function for both js files so old graphs are cleared for new ones.
+    
+chenB -- 2020-5-4 22:13
+    - Created grouped bar graph (confirmed, recovered, deaths) for countries comparison beside the US.
+    - Added a legend for the group bar graph so people know what the different color bars are.
 
 chinK -- 2020-5-4 10:28
     - Added navigation bar and fix homepage
