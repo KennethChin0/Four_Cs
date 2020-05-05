@@ -279,8 +279,6 @@ var barGraph = function(e){
     var refilteredData = []
     refilteredData.push(filteredData1[filteredData1.length-1])
     refilteredData.push(filteredData2[filteredData2.length-1])
-    console.log(refilteredData)
-    console.log(data)
 
     var subgroups = data.columns.slice(2)
     var groups = d3.map(refilteredData, function(d){return(d.Country)}).keys()
