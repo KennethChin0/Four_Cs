@@ -58,6 +58,11 @@ chenB -- 2020-5-4 22:13
 
 chinK -- 2020-5-4 10:28
     - Added navigation bar and fix homepage
+    
+chenB -- 2020-5-5 12:46
+    - Added a new line graph with confirmed cases growth of key countries (China, US, UK, Italy, France, Germany, Spain, Iran)
+    - Included colored circles with texts legends to tell the different color lines apart.
+
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
