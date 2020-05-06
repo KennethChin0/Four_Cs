@@ -71,3 +71,8 @@ Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
     - Added a timeline
+    
+chenE -- 2020-6-5 13:53
+    - Styled the stats page such that it matches the intended design on the devlog
+    - Added axes and a title to each of the graphs of the stats page
+    - Changed the datalist to look cleaner
