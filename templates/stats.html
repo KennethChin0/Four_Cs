@@ -27,12 +27,20 @@
         <option id = {{x}}>{{x}}</option>
         {% endfor %}
       </datalist>
-      <input name="country" id="country" list="allCountries" autocomplete="off" style="width:100%; font-size:16px;">
-      <div id = "timeGraph">
+      <div style= "text-align: center;">
+      <input name="country" id="country" list="allCountries" placeholder="Country" autocomplete="off" style="text-align: center; width: 25%; font-size:16px;">
       </div>
-      <div id = "populationPie">
+      <br>
+      <br>
+      <div style="text-align: center; width: 100%; display: table;">
+        <div style="display: table-row">
+            <div id = "populationPie" style="width: 50%; display: table-cell;"></div>
+            <div id = "barGraph" style="width: 50%; display: table-cell;"></div>
+          </div>
       </div>
-      <div id = "barGraph">
+      <br>
+      <br>
+      <div id = "timeGraph" style="text-align: center;"">
       </div>
     </body>
     <script src="http://d3js.org/d3.v5.js"
