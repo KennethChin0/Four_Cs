@@ -62,6 +62,10 @@ chinK -- 2020-5-4 10:28
 chenB -- 2020-5-5 12:46
     - Added a new line graph with confirmed cases growth of key countries (China, US, UK, Italy, France, Germany, Spain, Iran)
     - Included colored circles with texts legends to tell the different color lines apart.
+    
+chenB -- 2020-6-5 00:09
+    - Completed worldwide aggregated confirmed cases, recovered, and deaths line graph with labels.
+    - Added some missing labels to other graphs
 
 Team -- 2020-4-29 20:05
     - Finish design doc
