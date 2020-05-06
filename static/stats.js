@@ -15,6 +15,7 @@ var check = function(e){//checks if input is a valid country
         clear()
         createTimeGraphUS(e.value)
         createPopulationPieUS("US")
+        createBarGraphUS("US")
       }
       else{
         clear()
@@ -363,6 +364,57 @@ var createBarGraph = function(e){
     filteredData = [{Category : "Confirmed", number : filteredData[0].Confirmed},
                     {Category : "Recovered", number : filteredData[0].Recovered},
                     {Category : "Deaths", number : filteredData[0].Deaths}]
+
+    var allCategory = []
+    var allNumbers = []
+    for (var i = 0; i < filteredData.length; i++){
+      allCategory.push({Category : filteredData[i].Category})
+      allNumbers.push({number : filteredData[i].number})
+    }
+
+    x.domain(filteredData.map(function(d) { return d.Category; }));
+    y.domain([0, d3.max(filteredData, function(d) { return +d.number; })]);
+
+    console.log(filteredData[0].number)
+
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    svg.selectAll(".bar")
+      .data(filteredData)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("fill", "#88cd87")
+      .attr("x", function(d) { return x(d.Category); })
+      .attr("width", x.bandwidth())
+      .attr("y", function(d) { return y(Number(d.number)); })
+      .attr("height", function(d) { return height - y(Number(d.number)); });
+  })
+}
+
+var createBarGraphUS = function(e){
+  var x = d3.scaleBand()
+    .range([0, width])
+    .padding(0.1);
+  var y = d3.scaleLinear()
+    .range([height, 0]);
+
+  var svg = d3.select("#barGraph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv("static/data/key-countries-pivoted.csv").then(function(data){
+    var filteredData = [data[data.length - 1]]
+    filteredData = [{Category : "Confirmed", number : filteredData[0].US},
+                    {Category : "Recovered", number : 164000},
+                    {Category : "Deaths", number : 72023}]
 
     var allCategory = []
     var allNumbers = []

@@ -1,5 +1,6 @@
 window.onload = function(){
   lineGraphCountries()
+  lineGraphAggregated()
 }
 
 var margin = {top: 10, right: 30, bottom: 30, left: 100},
@@ -141,4 +142,86 @@ var lineGraphCountries = function(e){
   svg.append("text").attr("x", 70).attr("y", 170).text("Iran").style("font-size", "15px").attr("alignment-baseline","middle")
   })
 
+}
+
+var lineGraphAggregated = function(e){
+  var filteredData = []
+  var allDates = []
+  d3.csv("static/data/worldwide-aggregated.csv").then(function(data){
+    for (var i = 0; i < data.length; i++){
+      filteredData.push({Date : d3.timeParse("%Y-%m-%d")(data[i].Date),
+                        Confirmed : data[i].Confirmed, Recovered : data[i].Recovered,
+                        Deaths : data[i].Deaths})
+      allDates.push(d3.timeParse("%Y-%m-%d")(data[i].Date))
+    }
+    var svg = d3.select("#lineGraphAggregated")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right + 50)
+        .attr("height", height + margin.top + margin.bottom )
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+    var x = d3.scaleTime()
+      .domain(d3.extent(allDates))
+      .range([ 0, width ]);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+      var y = d3.scaleLinear()
+        .domain([0, d3.max(filteredData, function(d) { return +d.Confirmed; })])
+        .range([ height, 0 ]);
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+      svg.append("path")
+     .datum(filteredData)
+     .attr("fill", "none")
+     .attr("stroke", "blue")
+     .attr("stroke-width", 1.5)
+     .attr("d", d3.line()
+       .x(function(d) { return x(d.Date) })
+       .y(function(d) { return y(d.Confirmed) })
+     )
+
+     svg.append("path")
+    .datum(filteredData)
+    .attr("fill", "none")
+    .attr("stroke", "green")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+      .x(function(d) { return x(d.Date) })
+      .y(function(d) { return y(d.Recovered) })
+    )
+
+    svg.append("path")
+    .datum(filteredData)
+    .attr("fill", "none")
+    .attr("stroke", "red")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+     .x(function(d) { return x(d.Date) })
+     .y(function(d) { return y(d.Deaths) })
+    )
+
+    svg.append("text")
+      .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData[filteredData.length -1].Confirmed)) + ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "blue")
+      .text("Confirmed");
+
+    svg.append("text")
+      .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData[filteredData.length -1].Recovered)) + ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "green")
+      .text("Recovered");
+
+    svg.append("text")
+      .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData[filteredData.length -1].Deaths)) + ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "red")
+      .text("Deaths");
+  })
 }

@@ -57,10 +57,12 @@ var draw = function(e){
   if (country1 != undefined && country2 != undefined){
     if (country1.localeCompare("United States") == 0){
         lineGraphUS()
+        barGraphUS()
       }
     else{
       if (country2.localeCompare("United States") == 0){
         lineGraphUS()
+        barGraphUS()
       }
       else{
         lineGraph()
@@ -113,7 +115,7 @@ var lineGraph = function(e){
     }
     var svg = d3.select("#timeGraph")
       .append("svg")
-        .attr("width", width + margin.left + margin.right + 50)
+        .attr("width", width + margin.left + margin.right + 60)
         .attr("height", height + margin.top + margin.bottom )
       .append("g")
         .attr("transform",
@@ -152,6 +154,19 @@ var lineGraph = function(e){
     .y(function(d) { return y(d.Confirmed) })
   )
 
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData1[filteredData1.length -1].Confirmed)) + ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", "blue")
+    .text(filteredData1[0].Country);
+
+    svg.append("text")
+      .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData2[filteredData2.length -1].Confirmed)) + ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "red")
+      .text(filteredData2[0].Country);
   })
   //console.log(filteredData)
 }
@@ -187,7 +202,7 @@ var lineGraphUS = function(e){
     //console.log(filteredData)
     var svg = d3.select("#timeGraph")
       .append("svg")
-        .attr("width", width + margin.left + margin.right + 50)
+        .attr("width", width + margin.left + margin.right + 70)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform",
@@ -216,6 +231,13 @@ var lineGraphUS = function(e){
      .y(function(d) { return y(d.US) })
    )
 
+   svg.append("text")
+     .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData1[filteredData1.length -1].US)) + ")")
+     .attr("dy", ".35em")
+     .attr("text-anchor", "start")
+     .style("fill", "steelblue")
+     .text("United States");
+
    if (c2.localeCompare("United States") != 0){
      d3.csv("static/data/countries-aggregated.csv").then(function(data2){
        var filteredData2 = []
@@ -223,14 +245,14 @@ var lineGraphUS = function(e){
        for (var i = 0; i < data2.length; i++){
          if (data2[i].Country.localeCompare(c2) == 0){
            filteredData2.push(data2[i])
-           console.log(data2[i])
+           //console.log(data2[i])
            allDates2.push(d3.timeParse("%Y-%m-%d")(data2[i].Date))
          }
        }
        for (i = 0; i < filteredData2.length; i++){
          filteredData2[i].Date = allDates2[i]
        }
-       console.log(filteredData2)
+
        svg.append("path")
         .datum(filteredData2)
         .attr("fill", "none")
@@ -239,7 +261,15 @@ var lineGraphUS = function(e){
         .attr("d", d3.line()
           .x(function(d) { return x(d.Date) })
           .y(function(d) { return y(d.Confirmed) })
-      )
+        )
+
+        svg.append("text")
+          .attr("transform", "translate(" + (width+3) + "," + y(Number(filteredData2[filteredData2.length -1].Confirmed)) + ")")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "start")
+          .style("fill", "red")
+          .text(filteredData2[0].Country);
+
      })
    }
   })
@@ -280,10 +310,12 @@ var barGraph = function(e){
     refilteredData.push(filteredData1[filteredData1.length-1])
     refilteredData.push(filteredData2[filteredData2.length-1])
 
+    console.log(filteredData1)
+    console.log(filteredData2)
+
     var subgroups = data.columns.slice(2)
     var groups = d3.map(refilteredData, function(d){return(d.Country)}).keys()
-    console.log(subgroups)
-    console.log(groups)
+
     var x = d3.scaleBand()
       .domain(groups)
       .range([0, width])
@@ -344,4 +376,173 @@ var barGraph = function(e){
       .text(function(d,i) {return c[i]; });
   })
 
+}
+
+var barGraphUS = function(e){
+  var svg = d3.select("#barGraph")
+    .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv("static/data/key-countries-pivoted.csv").then(function(data){
+    var allCategories = []//country names will be the group of bars name
+    var allSubCategories = []//confirmed, recovered, deaths
+    var filteredData1 = []
+    var filteredData2 = []
+    var c1 = country1
+    var c2 = country2
+    if (c2.localeCompare("United States") == 0){
+      var temp = c1
+      c1 = c2
+      c2 = temp
+    }
+
+    filteredData1.push({Date : data[data.length-1].Date, Country : "United States", Confirmed : data[data.length-1].US,
+                        Recovered : 164000, Deaths : 72023})
+
+
+    var refilteredData = []
+    refilteredData.push(filteredData1[filteredData1.length-1])
+
+    if (c2.localeCompare("United States") == 0){
+      var subgroups = ['Confirmed','Recovered','Deaths']
+      var groups = d3.map(refilteredData, function(d){return(d.Country)}).keys()
+      console.log(subgroups)
+      console.log(groups)
+      var x = d3.scaleBand()
+        .domain(groups)
+        .range([0, width])
+        .padding([0.2])
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).tickSize(0));
+
+      var y = d3.scaleLinear()
+        .domain([0, d3.max(refilteredData, function(d) { return +d.Confirmed; })])
+        .range([ height, 0 ]);
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+      var xSubgroup = d3.scaleBand()
+        .domain(subgroups)
+        .range([0, x.bandwidth()])
+        .padding([0.05])
+
+      var color = d3.scaleOrdinal()
+        .domain(subgroups)
+        .range(['#e41a1c','#377eb8','#4daf4a'])
+
+      svg.append("g")
+        .selectAll("g")
+        .data(refilteredData)
+        .enter()
+        .append("g")
+          .attr("transform", function(d) { return "translate(" + x(d.Country) + ",0)"; })
+        .selectAll("rect")
+        .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
+        .enter().append("rect")
+          .attr("x", function(d) { return xSubgroup(d.key); })
+          .attr("y", function(d) { return y(d.value); })
+          .attr("width", xSubgroup.bandwidth())
+          .attr("height", function(d) { return height - y(d.value); })
+          .attr("fill", function(d) { return color(d.key); });
+
+    var c = ["Confirmed", "Recovered", "Deaths"]
+    var legend = svg.selectAll(".legend")
+        .data(c)
+    .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d,i) { return "translate(0," + i * 20 + ")"; })
+        .style("opacity","100");
+
+    legend.append("rect")
+        .attr("x", width - 18)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function(d) { return color(d); });
+
+    legend.append("text")
+        .attr("x", width - 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "end")
+        .text(function(d,i) {return c[i]; });
+    }
+    else{
+      d3.csv("static/data/countries-aggregated.csv").then(function(moreData){
+        for (var i = 0; i < moreData.length; i++){
+          if (moreData[i].Country.localeCompare(c2) == 0){
+            filteredData2.push(moreData[i])
+          }
+        }
+        refilteredData.push(filteredData2[filteredData2.length-1])
+        var subgroups = moreData.columns.slice(2)
+        var groups = d3.map(refilteredData, function(d){return(d.Country)}).keys()
+        console.log(subgroups)
+        console.log(groups)
+        var x = d3.scaleBand()
+          .domain(groups)
+          .range([0, width])
+          .padding([0.2])
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x).tickSize(0));
+
+        var y = d3.scaleLinear()
+          .domain([0, d3.max(refilteredData, function(d) { return +d.Confirmed; })])
+          .range([ height, 0 ]);
+        svg.append("g")
+          .call(d3.axisLeft(y));
+
+        var xSubgroup = d3.scaleBand()
+          .domain(subgroups)
+          .range([0, x.bandwidth()])
+          .padding([0.05])
+
+        var color = d3.scaleOrdinal()
+          .domain(subgroups)
+          .range(['#e41a1c','#377eb8','#4daf4a'])
+
+        svg.append("g")
+          .selectAll("g")
+          .data(refilteredData)
+          .enter()
+          .append("g")
+            .attr("transform", function(d) { return "translate(" + x(d.Country) + ",0)"; })
+          .selectAll("rect")
+          .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
+          .enter().append("rect")
+            .attr("x", function(d) { return xSubgroup(d.key); })
+            .attr("y", function(d) { return y(d.value); })
+            .attr("width", xSubgroup.bandwidth())
+            .attr("height", function(d) { return height - y(d.value); })
+            .attr("fill", function(d) { return color(d.key); });
+
+      var c = ["Confirmed", "Recovered", "Deaths"]
+      var legend = svg.selectAll(".legend")
+          .data(c)
+      .enter().append("g")
+          .attr("class", "legend")
+          .attr("transform", function(d,i) { return "translate(0," + i * 20 + ")"; })
+          .style("opacity","100");
+
+      legend.append("rect")
+          .attr("x", width - 18)
+          .attr("width", 18)
+          .attr("height", 18)
+          .style("fill", function(d) { return color(d); });
+
+      legend.append("text")
+          .attr("x", width - 24)
+          .attr("y", 9)
+          .attr("dy", ".35em")
+          .style("text-anchor", "end")
+          .text(function(d,i) {return c[i]; });
+      })
+    }
+
+  })
 }
