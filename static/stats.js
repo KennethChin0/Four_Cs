@@ -62,10 +62,10 @@ var createTimeGraph = function(e){
     var svg = d3.select("#timeGraph")
       .append("svg")
         .attr("width", width + margin.left + margin.right + 50)
-        .attr("height", height + margin.top + margin.bottom )
+        .attr("height", height + (2 * (margin.top + margin.bottom)))
       .append("g")
         .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+              "translate(" + margin.left + "," + (2 * margin.top) + ")");
 
     var x = d3.scaleTime()
       .domain(d3.extent(allDates))
@@ -130,6 +130,29 @@ var createTimeGraph = function(e){
     .attr("text-anchor", "start")
     .style("fill", "red")
     .text("Deaths");
+
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .style("text-decoration", "underline")
+    .text("Number of Cases Over Time");
+
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", height + margin.bottom + 5)
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .text("Date");
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0 - (height / 2))
+    .attr("y", -50)
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .text("Total Number of Cases");
   })
   //console.log(filteredData)
 }
@@ -147,6 +170,15 @@ var createPopulationPie = function(e){
       .attr("height", height)
     .append("g")
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  svg.append("text")
+      .attr("x", 0)
+      .attr("y", 0 - height / 2.25)
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("text-decoration", "underline")
+      .text("Confirmed Cases Vs. Healthy Cases");
+
 
   var population = 0
   var latestNumOfConfirmed = 0
@@ -201,6 +233,7 @@ var createPopulationPie = function(e){
         .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
         .style("text-anchor", "middle")
         .style("font-size", 17)
+
 
     })
   })
@@ -339,6 +372,8 @@ var createPopulationPieUS = function(e){
 }
 
 var createBarGraph = function(e){
+  var width = 550
+  var height = 450
   var x = d3.scaleBand()
     .range([0, width])
     .padding(0.1);
@@ -347,10 +382,10 @@ var createBarGraph = function(e){
 
   var svg = d3.select("#barGraph").append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("height", height + (2 * (margin.top + margin.bottom)))
   .append("g")
     .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+          "translate(" + margin.left + "," + (2 * margin.top) + ")");
 
   d3.csv("static/data/countries-aggregated.csv").then(function(data){
     var filteredData = []//getting all rows with the specified country
@@ -393,6 +428,29 @@ var createBarGraph = function(e){
       .attr("width", x.bandwidth())
       .attr("y", function(d) { return y(Number(d.number)); })
       .attr("height", function(d) { return height - y(Number(d.number)); });
+
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("text-decoration", "underline")
+      .text("Comparison between the Types of Cases");
+
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", height + margin.bottom + 1)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Types of Cases");
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", 0 - (height / 2))
+      .attr("y", -50)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Total Number of Cases");
   })
 }
 
