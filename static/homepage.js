@@ -1,6 +1,7 @@
 window.onload = function(){
   lineGraphCountries()
   lineGraphAggregated()
+  mapWorld()
 }
 
 var margin = {top: 10, right: 30, bottom: 30, left: 100},
@@ -224,4 +225,75 @@ var lineGraphAggregated = function(e){
       .style("fill", "red")
       .text("Deaths");
   })
+}
+
+
+var mapWorld = function(e){
+
+
+
+  Promise.all([
+  d3.json('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'),
+  d3.csv('static/data/countries-aggregated.csv')
+  ]).then(
+  d => ready(null, d[0], d[1], d)
+  );
+  // var promises = [
+  // d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
+  // d3.csv("static/data/countries-aggregated.csv").then(function(d) {
+  //   //d = d.splice(17945)
+  //   mapData.set(d.Country, +d.Confirmed);
+  // })
+  // ]
+}
+
+function ready(error, data, confirmed, something){
+  confirmed = confirmed.splice(17945)
+  var confirmedByCountry = {}
+  confirmed.forEach(d => { confirmedByCountry[d.Country] = + d.Confirmed})
+  data.features.forEach(d => {d.Confirmed = confirmedByCountry[d.Country]})
+
+  console.log(confirmedByCountry)
+  confirmedByCountry["United States"] = 1000000
+  var projection = d3.geoRobinson()
+    .scale(148)
+    .rotate([352, 0, 0])
+    .translate( [width / 2, height / 2]);
+  var path = d3.geoPath().projection(projection);
+  var color = d3.scaleThreshold()
+    .domain([
+      0, 1000, 10000, 100000, 1000000, 10000000
+    ])
+    .range(d3.schemeReds[5]);
+
+
+  var svg = d3.select("#map")
+    .append("svg")
+      .attr("width", width + margin.left + margin.right )
+      .attr("height", height + margin.top + margin.bottom )
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")")
+    .attr('class','map');
+
+  svg.append('g')
+    .attr('class', 'countries')
+    .selectAll('path')
+    .data(data.features)
+    .enter().append('path')
+      .attr('d', path)
+      .style('fill', function(d){
+        var value = confirmedByCountry[d.properties.name] || 0
+        console.log(d.properties.name)
+        if (d.properties.name.localeCompare("USA") == 0){
+          value = 1240000
+        }
+        return color(value)})
+      .style('stroke', 'white')
+      .style('opacity', 0.8)
+      .style('stroke-width', 0.3)
+  svg.append('path')
+    .datum(topojson.mesh(data.features, (a, b) => a.Confirmed !== b.Confirmed))
+    .attr('class', 'names')
+    .attr('d', path);
 }
