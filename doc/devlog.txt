@@ -69,8 +69,8 @@ chenB -- 2020-5-6 00:09
 
 chenB -- 2020-5-6 21:19
     - Added a choropleth graph (world map where countries with more cases are a darker shade of a color)
-    - Added a circluar bar graph to display top 50 countries with the most confirmed cases. Need to resize it later cause the US is
-    too big :( .
+    - Added a circluar bar graph to rank top 50 countries in order with the most confirmed cases. Need to resize it later cause the 
+    US is too big :( .
 
 Team -- 2020-4-29 20:05
     - Finish design doc
