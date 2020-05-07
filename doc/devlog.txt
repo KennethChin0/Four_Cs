@@ -63,9 +63,14 @@ chenB -- 2020-5-5 12:46
     - Added a new line graph with confirmed cases growth of key countries (China, US, UK, Italy, France, Germany, Spain, Iran)
     - Included colored circles with texts legends to tell the different color lines apart.
     
-chenB -- 2020-6-5 00:09
+chenB -- 2020-5-6 00:09
     - Completed worldwide aggregated confirmed cases, recovered, and deaths line graph with labels.
     - Added some missing labels to other graphs
+
+chenB -- 2020-5-6 21:19
+    - Added a choropleth graph (world map where countries with more cases are a darker shade of a color)
+    - Added a circluar bar graph to display top 50 countries with the most confirmed cases. Need to resize it later cause the US is
+    too big :( .
 
 Team -- 2020-4-29 20:05
     - Finish design doc
