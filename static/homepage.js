@@ -2,11 +2,14 @@ window.onload = function(){
   lineGraphCountries()
   lineGraphAggregated()
   mapWorld()
+  rankedCircle()
 }
 
 var margin = {top: 10, right: 30, bottom: 30, left: 100},
     width = 1000 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
+    innerRadius = 90,
+    outerRadius = Math.min(width, height) / 2;
 
 var lineGraphCountries = function(e){
   var filteredData = []//new data array with only the specified country data
@@ -227,11 +230,60 @@ var lineGraphAggregated = function(e){
   })
 }
 
+var rankedCircle = function(e){
+  var svg = d3.select("#rankedCircle")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + (width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")");
+
+  d3.csv("static/data/countries-aggregated.csv").then(function(data){
+    data = data.splice(17945)
+    data.splice(50)
+    data = data.sort(function (a, b) {
+      return parseInt(b.Confirmed) - parseInt(a.Confirmed)
+    });
+    console.log(data)
+    var x = d3.scaleBand()
+     .range([0, 2 * Math.PI])
+     .align(0)
+     .domain(data.map(function(d) { return d.Country; }));
+    var y = d3.scaleRadial()
+     .range([innerRadius, outerRadius])
+     .domain([0, 14000]);
+
+
+    svg.append("g")
+     .selectAll("path")
+     .data(data)
+     .enter()
+     .append("path")
+       .attr("fill", "#69b3a2")
+       .attr("d", d3.arc()
+           .innerRadius(innerRadius)
+           .outerRadius(function(d) { return y(d['Confirmed']); })
+           .startAngle(function(d) { return x(d.Country); })
+           .endAngle(function(d) { return x(d.Country) + x.bandwidth(); })
+           .padAngle(0.01)
+           .padRadius(innerRadius))
+
+   svg.append("g")
+       .selectAll("g")
+       .data(data)
+       .enter()
+       .append("g")
+         .attr("text-anchor", function(d) { return (x(d.Country) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
+         .attr("transform", function(d) { return "rotate(" + ((x(d.Country) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (y(parseInt(d['Confirmed']))+10) + ",0)"; })
+       .append("text")
+         .text(function(d){return(d.Country)})
+         .attr("transform", function(d) { return (x(d.Country) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
+         .style("font-size", "11px")
+       .attr("alignment-baseline", "middle")
+  })
+}
 
 var mapWorld = function(e){
-
-
-
   Promise.all([
   d3.json('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'),
   d3.csv('static/data/countries-aggregated.csv')
@@ -284,7 +336,7 @@ function ready(error, data, confirmed, something){
       .attr('d', path)
       .style('fill', function(d){
         var value = confirmedByCountry[d.properties.name] || 0
-        console.log(d.properties.name)
+      //  console.log(d.properties.name)
         if (d.properties.name.localeCompare("USA") == 0){
           value = 1240000
         }
