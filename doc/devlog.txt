@@ -72,6 +72,9 @@ chenB -- 2020-5-6 21:19
     - Added a circluar bar graph to rank top 50 countries in order with the most confirmed cases. Need to resize it later cause the 
     US is too big :( .
 
+chenB -- 2020-5-7 22:42
+    - Added a line graph depicting world-wide virus percent growth per day.
+
 Team -- 2020-4-29 20:05
     - Finish design doc
     - Fixed up roles and responsibilities
