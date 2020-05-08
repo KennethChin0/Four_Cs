@@ -3,6 +3,7 @@ window.onload = function(){
   lineGraphAggregated()
   mapWorld()
   rankedCircle()
+  percentGrowth()
 }
 
 var margin = {top: 10, right: 30, bottom: 30, left: 100},
@@ -348,4 +349,50 @@ function ready(error, data, confirmed, something){
     .datum(topojson.mesh(data.features, (a, b) => a.Confirmed !== b.Confirmed))
     .attr('class', 'names')
     .attr('d', path);
+}
+
+
+var percentGrowth = function(e){
+  var filteredData = []
+  var allDates = []
+  d3.csv("static/data/worldwide-aggregated.csv").then(function(data){
+  //console.log(data)
+    for (var i = 0; i < data.length; i++){
+      filteredData.push({Date : d3.timeParse("%Y-%m-%d")(data[i].Date),
+                        Growth : data[i]["Increase rate"]})
+      allDates.push(d3.timeParse("%Y-%m-%d")(data[i].Date))
+    }
+  filteredData = filteredData.splice(1)
+  //console.log(filteredData)
+    var svg = d3.select("#percentGrowth")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right + 50)
+        .attr("height", height + margin.top + margin.bottom )
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+    var x = d3.scaleTime()
+      .domain(d3.extent(allDates))
+      .range([ 0, width ]);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+      var y = d3.scaleLinear()
+        .domain([0, 100])
+        .range([ height, 0 ]);
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+     svg.append("path")
+    .datum(filteredData)
+    .attr("fill", "none")
+    .attr("stroke", "red")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+      .x(function(d) { return x(d.Date) })
+      .y(function(d) { return y(d.Growth) })
+    )
+
+
+  })
 }
