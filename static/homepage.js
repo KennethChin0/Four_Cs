@@ -9,7 +9,7 @@ window.onload = function(){
 var margin = {top: 10, right: 30, bottom: 30, left: 100},
     width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
-    innerRadius = 90,
+    innerRadius = 45,
     outerRadius = Math.min(width, height) / 2;
 
 var lineGraphCountries = function(e){
@@ -282,17 +282,19 @@ var rankedCircle = function(e){
   var svg = d3.select("#rankedCircle")
   .append("svg")
     .attr("width", 400 + margin.left + margin.right)
-    .attr("height", 1100 + margin.top + margin.bottom)
+    .attr("height", 1100 + margin.top + margin.bottom + 500)
   .append("g")
     .attr("transform", "translate(" + (300 / 2 + margin.left) + "," + (700 + margin.top) + ")");
 
   d3.csv("static/data/countries-aggregated.csv").then(function(data){
     data = data.splice(17945)
     data.splice(50)
+    console.log(data)
+    data.push({Country : "United States", Confirmed : 1360000})
     data = data.sort(function (a, b) {
       return parseInt(b.Confirmed) - parseInt(a.Confirmed)
     });
-    console.log(data)
+    //console.log(data)
     var x = d3.scaleBand()
      .range([0, 2 * Math.PI])
      .align(0)
@@ -310,7 +312,7 @@ var rankedCircle = function(e){
        .attr("fill", "#69b3a2")
        .attr("d", d3.arc()
            .innerRadius(innerRadius)
-           .outerRadius(function(d) { return y(d['Confirmed']); })
+           .outerRadius(function(d) { return y(d['Confirmed']);})
            .startAngle(function(d) { return x(d.Country); })
            .endAngle(function(d) { return x(d.Country) + x.bandwidth(); })
            .padAngle(0.01)
