@@ -23,19 +23,28 @@
       <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <h1 class="display-4">ProjectName: Coronavirus Statistics </h1>
-    <p class="lead">Description </p>
+    <p class="lead">Our project will be focusing on COVID-19. We will visualize statistics like the number of cases, deaths, and cures in the US and other countries both individually and in proportion to total population. There will be graphs to track growth of the virus in multiple countries as well as the ability to compare them. We plan to create bar graphs, line graphs, and maybe even pie charts to represent these statistics.</p>
   </div>
 </div>
-    <div id = map>
-    </div>
-    <div id = rankedCircle>
-    </div>
-    <div id = lineGraphCountries>
-    </div>
-    <div id = lineGraphAggregated>
-    </div>
-    <div id = percentGrowth>
-    </div>
+<div id = map style="width: 100%; text-align: center;">
+</div>
+<table style="width: 100%">
+    <tr>
+      <td>
+        <div id = lineGraphCountries>
+        </div>
+        <br>
+        <div id = percentGrowth>
+        </div>
+      </td>
+      <td>
+        <div id = rankedCircle>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div id = lineGraphAggregated style="width: 100%; text-align: center;">
+  </div>
     </body>
     <script src="http://d3js.org/d3.v5.js"
       charset="utf-8"></script>

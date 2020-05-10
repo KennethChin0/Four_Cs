@@ -7,8 +7,8 @@ window.onload = function(){
 }
 
 var margin = {top: 10, right: 30, bottom: 30, left: 100},
-    width = 1000 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    width = 800 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
     innerRadius = 90,
     outerRadius = Math.min(width, height) / 2;
 
@@ -16,7 +16,6 @@ var lineGraphCountries = function(e){
   var filteredData = []//new data array with only the specified country data
   //needs a separate checker for United States because US is part of different csv
   var allDates = []
-
   d3.csv("static/data/key-countries-pivoted.csv").then(function(data){
     for (var i = 0; i < data.length; i++){
       filteredData.push({Date : d3.timeParse("%Y-%m-%d")(data[i].Date),
@@ -30,10 +29,10 @@ var lineGraphCountries = function(e){
     var svg = d3.select("#lineGraphCountries")
       .append("svg")
         .attr("width", width + margin.left + margin.right + 50)
-        .attr("height", height + margin.top + margin.bottom )
+        .attr("height", height + 2 * (margin.top + margin.bottom))
       .append("g")
         .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+              "translate(" + margin.left + "," + margin.top * 2 + ")");
 
     var x = d3.scaleTime()
       .domain(d3.extent(allDates))
@@ -145,11 +144,35 @@ var lineGraphCountries = function(e){
   svg.append("circle")
     .attr("cx",60).attr("cy",170).attr("r",8).style("fill", "gray")
   svg.append("text").attr("x", 70).attr("y", 170).text("Iran").style("font-size", "15px").attr("alignment-baseline","middle")
+
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .style("text-decoration", "underline")
+    .text("Total Cases Over Time of Eight Countries with the Most Cases");
+
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", height + margin.bottom + 5)
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .text("Date");
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 0 - (height / 2))
+    .attr("y", -65)
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .text("Number of Cases");
   })
 
 }
 
 var lineGraphAggregated = function(e){
+  var width = 1000
   var filteredData = []
   var allDates = []
   d3.csv("static/data/worldwide-aggregated.csv").then(function(data){
@@ -162,10 +185,10 @@ var lineGraphAggregated = function(e){
     var svg = d3.select("#lineGraphAggregated")
       .append("svg")
         .attr("width", width + margin.left + margin.right + 50)
-        .attr("height", height + margin.top + margin.bottom )
+        .attr("height", height + 2 * (margin.top + margin.bottom))
       .append("g")
         .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+              "translate(" + margin.left + "," + 2 * margin.top + ")");
     var x = d3.scaleTime()
       .domain(d3.extent(allDates))
       .range([ 0, width ]);
@@ -228,16 +251,40 @@ var lineGraphAggregated = function(e){
       .attr("text-anchor", "start")
       .style("fill", "red")
       .text("Deaths");
+
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "18px")
+      .style("text-decoration", "underline")
+      .text("Total Cases Aggregated Worldwide Over Time");
+
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", height + margin.bottom + 5)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Date");
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", 0 - (height / 2))
+      .attr("y", -65)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Number of Cases");
+
   })
 }
 
 var rankedCircle = function(e){
   var svg = d3.select("#rankedCircle")
   .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", 400 + margin.left + margin.right)
+    .attr("height", 1100 + margin.top + margin.bottom)
   .append("g")
-    .attr("transform", "translate(" + (width / 2 + margin.left) + "," + (height / 2 + margin.top) + ")");
+    .attr("transform", "translate(" + (300 / 2 + margin.left) + "," + (700 + margin.top) + ")");
 
   d3.csv("static/data/countries-aggregated.csv").then(function(data){
     data = data.splice(17945)
@@ -281,6 +328,14 @@ var rankedCircle = function(e){
          .attr("transform", function(d) { return (x(d.Country) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
          .style("font-size", "11px")
        .attr("alignment-baseline", "middle")
+
+    svg.append("text")
+       .attr("x", 0)
+       .attr("y", 0 - (1.30 * height))
+       .attr("text-anchor", "middle")
+       .style("font-size", "16px")
+       .style("text-decoration", "underline")
+       .text("Bar Graph of 50 Coutries with the Least Amount of Cases");
   })
 }
 
@@ -319,14 +374,13 @@ function ready(error, data, confirmed, something){
     ])
     .range(d3.schemeReds[5]);
 
-
   var svg = d3.select("#map")
     .append("svg")
       .attr("width", width + margin.left + margin.right )
       .attr("height", height + margin.top + margin.bottom )
     .append("g")
       .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")")
+            "translate(" + 68.035 + "," + 2 * margin.top + ")")
     .attr('class','map');
 
   svg.append('g')
@@ -349,6 +403,14 @@ function ready(error, data, confirmed, something){
     .datum(topojson.mesh(data.features, (a, b) => a.Confirmed !== b.Confirmed))
     .attr('class', 'names')
     .attr('d', path);
+
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .style("text-decoration", "underline")
+    .text("World Map Scaled by the Amount of Confirmed Cases");
 }
 
 
@@ -367,10 +429,10 @@ var percentGrowth = function(e){
     var svg = d3.select("#percentGrowth")
       .append("svg")
         .attr("width", width + margin.left + margin.right + 50)
-        .attr("height", height + margin.top + margin.bottom )
+        .attr("height", height + 2 * (margin.top + margin.bottom))
       .append("g")
         .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+              "translate(" + margin.left + "," + 2 * margin.top + ")");
     var x = d3.scaleTime()
       .domain(d3.extent(allDates))
       .range([ 0, width ]);
@@ -393,6 +455,28 @@ var percentGrowth = function(e){
       .y(function(d) { return y(d.Growth) })
     )
 
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "18px")
+      .style("text-decoration", "underline")
+      .text("Percent Growth of Total Cases Worldwide (measured by Week) Over Time");
+
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", height + margin.bottom + 5)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Date");
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", 0 - (height / 2))
+      .attr("y", -65)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Percentage (%)");
 
   })
 }
