@@ -22,6 +22,11 @@ Team -- 2020-4-28 20:30
 chenB -- 2020-4-29 10:54
     - Created basic routes and html templates. 
     - Read csv file in python to get all country names and made a searchable dropdown menu from it in one of the pages.
+
+Team -- 2020-4-29 20:05
+    - Finish design doc
+    - Fixed up roles and responsibilities
+    - Added a timeline
     
 chenB -- 2020-4-29 22:30
     - Checked and received country input from html in JavaScript for valid country name. 
@@ -74,11 +79,6 @@ chenB -- 2020-5-6 21:19
 
 chenB -- 2020-5-7 22:42
     - Added a line graph depicting world-wide virus percent growth per day.
-
-Team -- 2020-4-29 20:05
-    - Finish design doc
-    - Fixed up roles and responsibilities
-    - Added a timeline
     
 chenE -- 2020-6-5 13:53
     - Styled the stats page such that it matches the intended design on the devlog
@@ -86,5 +86,8 @@ chenE -- 2020-6-5 13:53
     - Changed the datalist to look cleaner
     
 chenE -- 2020-9-5 20:45
-    -Styled the homepage and the compare page
-    -Fixed the axes and titles of all individual US graphs
+    - Styled the homepage and the compare page
+    - Fixed the axes and titles of all individual US graphs
+
+chenJ -- 2020-5-9 22:40
+    - Added in animated line graphs
