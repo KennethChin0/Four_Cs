@@ -1,4 +1,4 @@
-# Project _____ by Four_Cs
+# Project CovidStats by Four_Cs
 
 # Roster
 * Brandon Chen
@@ -11,3 +11,16 @@
 
 # Summary/Description
 Our project will be focusing on COVID-19. We will visualize statistics like the number of cases, deaths, and cures in the US and other countries both individually and in proportion to total population. There will be graphs to track growth of the virus in multiple countries as well as the ability to compare them. We plan to create bar graphs, line graphs, and maybe even pie charts to represent these statistics.
+
+## How to Run the Project:  
+### Requirements:
+Python3 and pip is required to run the project  
+[Download Python3 here](https://www.python.org/downloads/) (pip3 comes with python3 download)
+requirements can be found in doc/requirements.txt
+
+### Clone instructions
+`$ git clone https://github.com/KennethChin0/uc_hicago.git`  
+After activating the virutal environment:  
+
+### Run the project:
+`$ python3 app.py`  
