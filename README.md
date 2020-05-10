@@ -20,7 +20,7 @@ requirements can be found in doc/requirements.txt
 
 ### Clone instructions
 `$ git clone https://github.com/KennethChin0/Four_Cs.git`  
-After activating the virutal environment:  
-
+ 
 ### Run the project:
+cd into the cloned repo and run:
 `$ python3 app.py`  
