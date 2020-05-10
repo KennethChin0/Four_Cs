@@ -6,7 +6,8 @@ var margin = { top: 10, right: 30, bottom: 30, left: 100 },
 // ANIM VARIABLES
 var timeCounter;
 var id;
-
+var now, then, elapsed, fpsInterval;
+var fps = 20;
 
 // ADD EventListener TO SEARCH BAR
 var chosenCountry = document.getElementById("country")
@@ -26,7 +27,6 @@ function check(e) {
                 createBarGraphUS("US")
             }
             else {
-                console.log("uhh");
                 clear()
                 initTimeGraph(e.value) // e.value is the chosen country
                 createPopulationPie(e.value) // population vs confirmed pie chart
@@ -46,27 +46,34 @@ var clear = function (e) {
 
 
 // TIME GRAPH FUNCTIONS
-var initTime = true;
+var initTimeDate = [];
 var timeData;
 var formatTimeData;
 d3.csv("static/data/countries-aggregated.csv").then(function (data) {
     timeData = data;
 });
 
+// Limit FPS Source: https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
 function initTimeGraph(country) {
-    if (initTime) {
-        formatTimeData = getTimeGraphData(country);
-        initTime = false;
-    }
+    formatTimeData = getTimeGraphData(country);
+
+    fpsInterval = 1000 / fps;
+    then = Date.now();
 
     id = window.requestAnimationFrame(animTimeGraph);
 }
 var animTimeGraph = function (e) {
     // END OF GRAPH
-    if (timeCounter > timeData.length) return;
+    if (timeCounter > timeData[1].length) return;
 
-    d3.select('#timeGraph').selectAll('svg').remove();
-    createTimeGraph(timeCounter++);
+    now = Date.now();
+    elapsed = now - then;
+    if (elapsed > fpsInterval) {
+        d3.select('#timeGraph').selectAll('svg').remove();
+        createTimeGraph(timeCounter++);
+
+        then = now - (elapsed % fpsInterval);
+    }
 
     id = window.requestAnimationFrame(animTimeGraph);
     // d3.timeout(animTimeGraph, 50);
@@ -81,15 +88,25 @@ function getTimeGraphData(country) {
     var allDeaths = []
 
     for (var i = 0; i < data.length; i++) {
+        
         if (data[i].Country.localeCompare(country) == 0) {
             filteredData.push(data[i])
-            allDates.push(d3.timeParse("%Y-%m-%d")(data[i].Date))
+            // Only timeparse the data on the first loop
+            // Will timeparse already parsed time if not done
+            if (initTimeDate.includes(country)) {
+                allDates.push((data[i].Date))
+            }
+            else {
+                allDates.push(d3.timeParse("%Y-%m-%d")(data[i].Date))
+            }
             allCountries.push({ Country: data[i].Country })
             allConfirmed.push({ Confirmed: data[i].Confirmed })
             allRecovered.push({ Recovered: data[i].Recovered })
             allDeaths.push({ Deaths: data[i].Deaths })
         }
     }
+    if (! initTimeDate.includes(country)) initTimeDate.push(country);
+
     return [filteredData, allDates, allCountries, allConfirmed, allRecovered, allDeaths];
 }
 function createTimeGraph(timeCounter) {
@@ -97,10 +114,6 @@ function createTimeGraph(timeCounter) {
     filteredData = filteredData.slice(0, timeCounter);
     var allDates = formatTimeData[1];
     allDates = allDates.slice(0, timeCounter);
-    var allCountries = formatTimeData[2];
-    var allConfirmed = formatTimeData[3];
-    var allRecovered = formatTimeData[4];
-    var allDeaths = formatTimeData[5];
 
     //console.log(filteredData)
     //console.log(allDates)
@@ -223,14 +236,23 @@ function initTimeGraphUS() {
         initTimeUS = false;
     }
 
+    fpsInterval = 1000 / fps;
+    then = Date.now();
+
     id = window.requestAnimationFrame(animTimeGraphUS);
 }
 function animTimeGraphUS() {
     // END OF GRAPH
-    if (timeCounter > timeDataUS.length) return;
+    if (timeCounter > timeDataUS[1].length) return;
 
-    d3.select('#timeGraph').selectAll('svg').remove();
-    createTimeGraphUS(timeCounter++);
+    now = Date.now();
+    elapsed = now - then;
+    if (elapsed > fpsInterval) {
+        d3.select('#timeGraph').selectAll('svg').remove();
+        createTimeGraphUS(timeCounter++);
+
+        then = now - (elapsed % fpsInterval);
+    }
 
     id = window.requestAnimationFrame(animTimeGraphUS);
     //d3.timeout(animTimeGraphUS, 50);
