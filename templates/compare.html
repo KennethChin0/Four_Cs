@@ -26,11 +26,19 @@
         <option id = {{x}}>{{x}}</option>
         {% endfor %}
       </datalist>
-      <input name="country" id="country1" list="allCountries" autocomplete="off" style="width:50%; font-size:16px;">
-      <input name="country" id="country2" list="allCountries" autocomplete="off" style="width:50%; font-size:16px;">
-      <div id = "timeGraph">
+      <br>
+      <div style="text-align: center;">
+      <span><input name="country" id="country1" list="allCountries" autocomplete="off" style="width:25%; font-size:16px;"></span>
+      <span> vs. </span>
+      <span><input name="country" id="country2" list="allCountries" autocomplete="off" style="width:25%; font-size:16px;"></span>
       </div>
-      <div id = "barGraph">
+      <br>
+      <br>
+      <div style="text-align: center; width: 100%; display: table;">
+        <div style="display: table-row">
+            <div id = "timeGraph" style="width: 50%; display: table-cell;"></div>
+            <div id = "barGraph" style="width: 50%; display: table-cell;"></div>
+          </div>
       </div>
     </body>
     <script src="http://d3js.org/d3.v5.js"

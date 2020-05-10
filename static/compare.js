@@ -1,6 +1,6 @@
 var margin = {top: 10, right: 30, bottom: 30, left: 100},
-    width = 1000 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    width = 650 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
 
 var chosenCountry1 = document.getElementById("country1")
 chosenCountry1.addEventListener('input',function(e){check1(this)})
@@ -116,10 +116,10 @@ var lineGraph = function(e){
     var svg = d3.select("#timeGraph")
       .append("svg")
         .attr("width", width + margin.left + margin.right + 60)
-        .attr("height", height + margin.top + margin.bottom )
+        .attr("height", height + 2 * (margin.top + margin.bottom))
       .append("g")
         .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
+              "translate(" + margin.left + "," + 2 * margin.top + ")");
 
     var x = d3.scaleTime()
       .domain(d3.extent(allDates1))
@@ -167,6 +167,29 @@ var lineGraph = function(e){
       .attr("text-anchor", "start")
       .style("fill", "red")
       .text(filteredData2[0].Country);
+
+      svg.append("text")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .style("text-decoration", "underline")
+        .text("Total Cases of " + c1 + " and " + c2 + " over Time");
+
+      svg.append("text")
+        .attr("x", (width / 2))
+        .attr("y", height + margin.bottom + 5)
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .text("Date");
+
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", 0 - (height / 2))
+        .attr("y", -50)
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .text("Number of Cases");
   })
   //console.log(filteredData)
 }
@@ -279,10 +302,10 @@ var barGraph = function(e){
   var svg = d3.select("#barGraph")
     .append("svg")
       .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("height", height + 2 * (margin.top + margin.bottom))
     .append("g")
       .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+            "translate(" + margin.left + "," + 2 * margin.top + ")");
 
   d3.csv("static/data/countries-aggregated.csv").then(function(data){
     var allCategories = []//country names will be the group of bars name
@@ -353,6 +376,30 @@ var barGraph = function(e){
         .attr("width", xSubgroup.bandwidth())
         .attr("height", function(d) { return height - y(d.value); })
         .attr("fill", function(d) { return color(d.key); });
+
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "18px")
+      .style("text-decoration", "underline")
+      .text("Comparison between the Types of Cases of the Two Countries");
+
+    svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", height + margin.bottom + 1)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Country");
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", 0 - (height / 2))
+      .attr("y", -50)
+      .attr("text-anchor", "middle")
+      .style("font-size", "14px")
+      .text("Number of Cases");
+
 
   var c = ["Confirmed", "Recovered", "Deaths"]
   var legend = svg.selectAll(".legend")
