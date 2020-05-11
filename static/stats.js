@@ -658,7 +658,7 @@ function createBarGraphUS(e) {
             .duration(1000)
             .attr("y", function (d) { return y(Number(d.number)); })
             .attr("height", function (d) { return height - y(Number(d.number)); });
-            svg.append("text")
+        svg.append("text")
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
             .attr("text-anchor", "middle")

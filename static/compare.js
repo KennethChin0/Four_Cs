@@ -515,11 +515,13 @@ var barGraphUS = function(e){
         .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
         .enter().append("rect")
           .attr("x", function(d) { return xSubgroup(d.key); })
-          .attr("y", function(d) { return y(d.value); })
+          .attr("y", function(d) { return y(0); })
           .attr("width", xSubgroup.bandwidth())
-          .attr("height", function(d) { return height - y(d.value); })
           .attr("fill", function(d) { return color(d.key); });
-
+          svg.selectAll("rect").transition()
+            .duration(1000)
+            .attr("height", function(d) { return height - y(d.value); })
+            .attr("y", function(d) { return y(d.value); })
     var c = ["Confirmed", "Recovered", "Deaths"]
     var legend = svg.selectAll(".legend")
         .data(c)
@@ -586,11 +588,14 @@ var barGraphUS = function(e){
           .data(function(d) { return subgroups.map(function(key) { return {key: key, value: d[key]}; }); })
           .enter().append("rect")
             .attr("x", function(d) { return xSubgroup(d.key); })
-            .attr("y", function(d) { return y(d.value); })
+            .attr("y", function(d) { return y(0); })
             .attr("width", xSubgroup.bandwidth())
             .attr("height", function(d) { return height - y(d.value); })
             .attr("fill", function(d) { return color(d.key); });
-
+            svg.selectAll("rect").transition()
+              .duration(1000)
+              .attr("height", function(d) { return height - y(d.value); })
+              .attr("y", function(d) { return y(d.value); })
       var c = ["Confirmed", "Recovered", "Deaths"]
       var legend = svg.selectAll(".legend")
           .data(c)
