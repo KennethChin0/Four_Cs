@@ -57,12 +57,10 @@ var draw = function (e) {
     if (country1 != undefined && country2 != undefined) {
         if (country1.localeCompare("United States") == 0 || country2.localeCompare("United States") == 0) {
             lineGraphUS()
-            transition()
             barGraphUS()
         }
         else {
             lineGraph()
-            transition()
             barGraph()
         }
     }
@@ -113,6 +111,7 @@ var lineGraph = function (e) {
             .append("svg")
             .attr("width", width + margin.left + margin.right + 60)
             .attr("height", height + 2 * (margin.top + margin.bottom))
+            .attr("id", "gSelect")
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + 2 * margin.top + ")");
@@ -151,20 +150,6 @@ var lineGraph = function (e) {
             )
 
         svg.append("text")
-            .attr("transform", "translate(" + (width + 3) + "," + y(Number(filteredData1[filteredData1.length - 1].Confirmed)) + ")")
-            .attr("dy", ".35em")
-            .attr("text-anchor", "start")
-            .style("fill", "blue")
-            .text(filteredData1[0].Country);
-
-        svg.append("text")
-            .attr("transform", "translate(" + (width + 3) + "," + y(Number(filteredData2[filteredData2.length - 1].Confirmed)) + ")")
-            .attr("dy", ".35em")
-            .attr("text-anchor", "start")
-            .style("fill", "red")
-            .text(filteredData2[0].Country);
-
-        svg.append("text")
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
             .attr("text-anchor", "middle")
@@ -192,9 +177,31 @@ var lineGraph = function (e) {
             .attr('y', -1 * height)
             .attr('height', height)
             .attr('width', width - (width / 59))
-            .attr('class', 'curtain')
+            .attr('id', 'curtain')
             .attr('transform', 'rotate(180)')
             .style('fill', '#FFFFFF');
+
+        d3.select("rect").transition()
+            .duration(1000)
+            .ease(d3.easeLinear)
+            .attr("x", width * -2 - 100)
+            .on("end", label);
+
+        function label() {
+            svg.append("text")
+            .attr("transform", "translate(" + (width + 3) + "," + y(Number(filteredData1[filteredData1.length - 1].Confirmed)) + ")")
+            .attr("dy", ".35em")
+            .attr("text-anchor", "start")
+            .style("fill", "blue")
+            .text(filteredData1[0].Country);
+
+        svg.append("text")
+            .attr("transform", "translate(" + (width + 3) + "," + y(Number(filteredData2[filteredData2.length - 1].Confirmed)) + ")")
+            .attr("dy", ".35em")
+            .attr("text-anchor", "start")
+            .style("fill", "red")
+            .text(filteredData2[0].Country);
+        }
     })
     //console.log(filteredData)
 }
@@ -299,6 +306,21 @@ var lineGraphUS = function (e) {
                     .text(filteredData2[0].Country);
             })
         }
+
+        var curtain = svg.append("rect")
+            .attr('x', -1 * width)
+            .attr('y', -1 * height)
+            .attr('height', height)
+            .attr('width', width - (width / 59))
+            .attr('id', 'curtain')
+            .attr('transform', 'rotate(180)')
+            .style('fill', '#FFFFFF');
+
+        d3.select("rect").transition()
+            .duration(1000)
+            .ease(d3.easeLinear)
+            .attr("x", width * -2 - 100);
+        
         svg.append("text")
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
@@ -322,13 +344,6 @@ var lineGraphUS = function (e) {
             .style("font-size", "14px")
             .text("Number of Cases");
     })
-}
-
-function transition() {
-    d3.selectAll("rect").transition()
-        .ease(d3.easeLinear)
-        .duration(1000)
-        .attr("width", 0);
 }
 
 var barGraph = function (e) {

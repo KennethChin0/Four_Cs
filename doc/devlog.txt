@@ -94,3 +94,7 @@ chenJ -- 2020-5-9 22:40
 
 chinK -- 2020-5-10 15:28
     -  Added Clone instructions
+
+chenJ -- 2020-5-10 20:25
+    - Fixed bug in stat line graph
+    - Added animated line graph for compare
