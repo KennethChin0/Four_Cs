@@ -88,7 +88,7 @@ function getTimeGraphData(country) {
     var allDeaths = []
 
     for (var i = 0; i < data.length; i++) {
-        
+
         if (data[i].Country.localeCompare(country) == 0) {
             filteredData.push(data[i])
             // Only timeparse the data on the first loop
@@ -575,9 +575,11 @@ function createBarGraph(e) {
             .attr("fill", "#88cd87")
             .attr("x", function (d) { return x(d.Category); })
             .attr("width", x.bandwidth())
+            .attr("y", function (d) { return y(0); })
+        svg.selectAll("rect").transition()
+            .duration(1000)
             .attr("y", function (d) { return y(Number(d.number)); })
             .attr("height", function (d) { return height - y(Number(d.number)); });
-
         svg.append("text")
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
@@ -651,9 +653,11 @@ function createBarGraphUS(e) {
             .attr("fill", "#88cd87")
             .attr("x", function (d) { return x(d.Category); })
             .attr("width", x.bandwidth())
+            .attr("y", function (d) { return y(0); })
+        svg.selectAll("rect").transition()
+            .duration(1000)
             .attr("y", function (d) { return y(Number(d.number)); })
             .attr("height", function (d) { return height - y(Number(d.number)); });
-        
             svg.append("text")
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
@@ -661,14 +665,14 @@ function createBarGraphUS(e) {
             .style("font-size", "16px")
             .style("text-decoration", "underline")
             .text("Comparison between the Types of Cases in the United States");
-    
+
         svg.append("text")
             .attr("x", (width / 2))
             .attr("y", height + margin.bottom + 1)
             .attr("text-anchor", "middle")
             .style("font-size", "14px")
             .text("Types of Cases");
-    
+
         svg.append("text")
             .attr("transform", "rotate(-90)")
             .attr("x", 0 - (height / 2))
