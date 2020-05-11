@@ -125,7 +125,7 @@ function createTimeGraph(timeCounter) {
     // CREATE SVG
     var svg = d3.select("#timeGraph")
         .append("svg")
-        .attr("width", width + margin.left + margin.right + 50)
+        .attr("width", width + margin.left + margin.right + 55)
         .attr("height", height + (2 * (margin.top + margin.bottom)))
         .append("g")
         .attr("transform",
